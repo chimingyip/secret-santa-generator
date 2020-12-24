@@ -1,6 +1,7 @@
 import random
 import smtplib
 from email.mime.text import MIMEText
+import getpass
 
 # list of people
 progress = True
@@ -15,8 +16,7 @@ while progress:
         name_dict[input_email] = input_name
         emails.append(input_email)
 
-print(name_dict)
-print(emails)
+print("Successfully created list of participants")
 
 # reorder the list to be random
 shuffled = emails
@@ -29,12 +29,10 @@ for i in range(len(shuffled)):
     else:
         draw[shuffled[i]] = shuffled[i+1]
 
-print(draw)
-
 # send emails
 
 sender = input("Type your email and press enter: ")
-password = input("Type your gmail password and press enter: ")
+password = getpass.getpass("Type your gmail password and press enter: ")
 
 for (giver, receiver) in draw.items():
     try:
@@ -43,11 +41,7 @@ for (giver, receiver) in draw.items():
         giver_name = name_dict[giver]
         receiver_name = name_dict[receiver]
 
-        msg = MIMEText(f"""
-        Hi {giver_name}
-        Your Secret Santa is: {receiver_name}
-        Have a Merry Xmas! :)
-        """)
+        msg = MIMEText(f"""Hi {giver_name},\nYour Secret Santa is: {receiver_name}\nHave a Merry Xmas! :)\n""")
         msg['Subject'] = 'Your Secret Santa is...'
         msg['From'] = giver
         msg['To'] = receiver
